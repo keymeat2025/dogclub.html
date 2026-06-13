@@ -8,398 +8,364 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --teal:    #0E6B6B;
-  --teal-dk: #0A4A4A;
-  --teal-lt: #128080;
-  --gold:    #C9A84C;
-  --gold-lt: #DFC06A;
-  --sage:    #7A9E9F;
-  --cream:   #FAF7F2;
-  --warm:    #F3EDE3;
-  --border:  #E2D9CC;
-  --mid:     #7A7060;
-  --ink:     #1A1A2E;
-  --white:   #fff;
+  --teal:#0E6B6B; --teal-dk:#0A4A4A; --teal-lt:#128080;
+  --gold:#C9A84C; --gold-lt:#DFC06A; --sage:#7A9E9F;
+  --cream:#FAF7F2; --warm:#F3EDE3; --border:#E2D9CC;
+  --mid:#7A7060; --ink:#1A1A2E; --white:#fff;
+  --pad:clamp(16px,5vw,52px);
+  --sec:clamp(40px,6vw,80px);
 }
 html{scroll-behavior:smooth}
-body{font-family:'Jost',sans-serif;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* image utility */
-.img-cover{width:100%;height:100%;object-fit:cover;display:block}
-.img-fade{opacity:0;transition:opacity .6s ease}
-.img-fade.loaded{opacity:1}
+/* ── SCROLL PROGRESS BAR — lives inside nav at its bottom edge ── */
+#scroll-bar{
+  position:absolute;bottom:0;left:0;
+  height:3px;width:0%;
+  background:linear-gradient(90deg,var(--teal-lt),var(--gold),var(--gold-lt));
+  transition:width .1s linear;
+  pointer-events:none;
+  z-index:1;
+}
 
-/* ── WHATSAPP ── */
-.wa-btn{
-  position:fixed;bottom:24px;right:24px;z-index:900;
-  width:58px;height:58px;border-radius:50%;background:#25D366;
-  display:flex;align-items:center;justify-content:center;
-  box-shadow:0 4px 20px rgba(37,211,102,.5);
-  text-decoration:none;transition:transform .2s;
-}
-.wa-btn:hover{transform:scale(1.1)}
-.wa-btn svg{width:30px;height:30px;fill:#fff}
-.wa-ring{
-  position:fixed;bottom:16px;right:16px;z-index:899;
-  width:74px;height:74px;border-radius:50%;
-  border:2px solid rgba(37,211,102,.4);
-  animation:waring 2s ease-in-out infinite;
-}
-@keyframes waring{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.15);opacity:0}}
+body{font-family:'Jost',sans-serif;font-size:16px;background:var(--cream);color:var(--ink);overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-/* ── NAV ── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  height:68px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 5vw;
-  background:rgba(10,74,74,.96);
-  backdrop-filter:blur(14px);
-  border-bottom:1px solid rgba(255,255,255,.07);
-}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none}
-.nav-logo-img{
-  width:38px;height:38px;border-radius:50%;overflow:hidden;
-  border:2px solid var(--gold);
-  box-shadow:0 2px 10px rgba(201,168,76,.4);
-}
+/* ── WHATSAPP FLOAT ── */
+.wa-float{position:fixed;bottom:20px;right:20px;z-index:800;width:54px;height:54px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.5);text-decoration:none;transition:transform .2s}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+.wa-ring{position:fixed;bottom:13px;right:13px;z-index:799;width:68px;height:68px;border-radius:50%;border:2px solid rgba(37,211,102,.35);animation:wring 2.2s ease-in-out infinite;pointer-events:none}
+@keyframes wring{0%,100%{transform:scale(1);opacity:.5}50%{transform:scale(1.18);opacity:0}}
+
+/* scroll bar sits flush under nav bottom edge */
+nav{position:fixed;top:0;left:0;right:0;z-index:600;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 var(--pad);background:rgba(10,74,74,.97);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.07);overflow:visible}
+.nav-brand{display:flex;align-items:center;gap:9px;text-decoration:none}
+.nav-logo-img{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid var(--gold);flex-shrink:0}
 .nav-logo-img img{width:100%;height:100%;object-fit:cover}
-.nav-name{font-family:'Cormorant Garamond',serif;font-size:1.45rem;font-weight:600;color:var(--cream);letter-spacing:.3px}
+.nav-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--cream);letter-spacing:.2px}
 .nav-name span{color:var(--gold)}
-.nav-links{display:flex;list-style:none}
-.nav-links a{
-  color:rgba(250,247,242,.45);text-decoration:none;
-  font-size:.78rem;font-weight:500;letter-spacing:.5px;text-transform:uppercase;
-  padding:0 18px;height:68px;display:flex;align-items:center;
-  border-left:1px solid rgba(255,255,255,.06);
-  transition:color .2s,background .2s;
-}
+.nav-links{display:flex;list-style:none;margin-left:auto}
+.nav-links a{color:rgba(250,247,242,.45);text-decoration:none;font-size:.875rem;font-weight:500;letter-spacing:.4px;text-transform:uppercase;padding:0 14px;height:60px;display:flex;align-items:center;border-left:1px solid rgba(255,255,255,.06);transition:color .2s,background .2s}
 .nav-links a:hover{color:var(--cream);background:rgba(255,255,255,.04)}
 .nav-links li:last-child a{border-right:1px solid rgba(255,255,255,.06)}
-.nav-right{display:flex;align-items:center;gap:12px}
-.nav-pill{font-size:.66rem;font-weight:600;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:4px 12px;border-radius:20px;letter-spacing:.5px;text-transform:uppercase}
-.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);padding:9px 22px;border-radius:3px;font-size:.78rem;font-weight:600;text-decoration:none;transition:opacity .2s,transform .2s}
-.nav-cta:hover{opacity:.9;transform:translateY(-1px)}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:8px}
-.hamburger span{display:block;width:22px;height:2px;background:var(--cream);border-radius:2px;transition:.3s}
+.nav-cta{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);padding:8px 18px;border-radius:3px;font-size:.875rem;font-weight:600;text-decoration:none;white-space:nowrap;margin-left:14px;transition:opacity .2s}
+.nav-cta:hover{opacity:.88}
+
+/* hamburger — hidden on desktop */
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:10px 8px;margin-left:10px;background:none;border:none}
+.hamburger span{display:block;width:22px;height:2px;background:var(--cream);border-radius:2px;transition:.3s ease}
 .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(2){opacity:0;transform:translateX(-8px)}
 .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-.mob-nav{
-  display:none;position:fixed;top:68px;left:0;right:0;z-index:490;
-  background:var(--teal-dk);flex-direction:column;
-  opacity:0;transform:translateY(-8px);pointer-events:none;transition:.3s;
-}
-.mob-nav.open{display:flex;opacity:1;transform:translateY(0);pointer-events:all}
-.mob-nav a{color:rgba(250,247,242,.7);text-decoration:none;padding:15px 5vw;font-size:.9rem;font-weight:500;border-bottom:1px solid rgba(255,255,255,.06);transition:color .2s}
-.mob-nav a:hover{color:var(--gold)}
-.mob-cta{background:var(--gold)!important;color:var(--ink)!important;text-align:center;font-weight:600!important;margin:14px 5vw;border-radius:3px;padding:12px!important}
 
-/* ── HERO ── */
-.hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;padding-top:68px}
-
-.hero-left{
+/* mobile menu drawer */
+.mob-drawer{
+  display:none; /* shown via JS */
+  position:fixed;top:60px;left:0;right:0;z-index:599;
   background:var(--teal-dk);
-  padding:clamp(56px,7vw,100px) clamp(24px,5vw,72px);
-  display:flex;flex-direction:column;justify-content:center;
-  position:relative;overflow:hidden;
-}
-.hero-left::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 15% 85%,rgba(201,168,76,.09) 0%,transparent 55%),
-             radial-gradient(ellipse at 85% 15%,rgba(14,107,107,.35) 0%,transparent 50%);
+  border-bottom:2px solid var(--gold);
+  flex-direction:column;
+  transform:translateY(-6px);opacity:0;
+  transition:transform .28s ease,opacity .28s ease;
   pointer-events:none;
 }
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:8px;
-  background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);
-  color:var(--gold);padding:6px 14px;border-radius:20px;
-  font-size:.68rem;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  margin-bottom:clamp(18px,3vw,32px);width:fit-content;position:relative;z-index:1;
+.mob-drawer.visible{display:flex}
+.mob-drawer.open{transform:translateY(0);opacity:1;pointer-events:all}
+.mob-drawer a{
+  color:rgba(250,247,242,.75);text-decoration:none;
+  padding:14px var(--pad);font-size:.95rem;font-weight:400;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:10px;
+  transition:color .2s,background .2s;
 }
-.e-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:blink 1.8s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-.hero h1{
-  font-family:'Cormorant Garamond',serif;
-  font-size:clamp(2.8rem,5.5vw,6rem);font-weight:300;line-height:1;letter-spacing:-.5px;
-  color:var(--cream);margin-bottom:clamp(14px,2vw,26px);position:relative;z-index:1;
-}
-.hero h1 em{
-  font-style:italic;font-weight:400;display:block;
-  background:linear-gradient(135deg,var(--gold),var(--gold-lt));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-}
-.hero h1 .ghost{-webkit-text-stroke:1px rgba(201,168,76,.3);-webkit-text-fill-color:transparent;color:transparent}
-.hero-sub{font-size:clamp(.85rem,1.1vw,.98rem);line-height:1.8;color:rgba(250,247,242,.45);max-width:430px;margin-bottom:clamp(24px,3.5vw,44px);font-weight:300;position:relative;z-index:1}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);padding:clamp(10px,1.4vw,14px) clamp(22px,2.5vw,34px);border-radius:3px;font-size:.86rem;font-weight:600;text-decoration:none;letter-spacing:.3px;transition:opacity .2s,transform .2s;display:inline-block;box-shadow:0 4px 18px rgba(201,168,76,.3)}
-.btn-gold:hover{opacity:.9;transform:translateY(-2px)}
-.btn-ghost{background:transparent;color:var(--cream);border:1px solid rgba(250,247,242,.2);padding:clamp(10px,1.4vw,14px) clamp(22px,2.5vw,34px);border-radius:3px;font-size:.86rem;font-weight:400;text-decoration:none;transition:border-color .2s,color .2s;display:inline-block}
-.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
-.hero-stats{display:flex;gap:clamp(18px,3vw,40px);margin-top:clamp(28px,4vw,52px);padding-top:clamp(22px,3vw,34px);border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
-.stn{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:600;color:var(--cream);letter-spacing:-1px;line-height:1}
-.stn sup{font-size:.85rem;color:var(--gold)}
-.stl{font-size:.66rem;color:rgba(250,247,242,.3);text-transform:uppercase;letter-spacing:.5px;margin-top:4px}
+.mob-drawer a:hover{color:var(--gold);background:rgba(255,255,255,.03)}
+.mob-drawer a .mob-icon{font-size:1rem;width:20px;text-align:center}
+.mob-cta-row{padding:14px var(--pad)}
+.mob-cta-btn{display:block;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);padding:13px;border-radius:4px;font-size:.9375rem;font-weight:600;text-align:center;text-decoration:none}
 
-/* hero right — photo collage */
-.hero-right{display:grid;grid-template-rows:62% 38%}
-.hr-photo-main{position:relative;overflow:hidden}
-.hr-photo-main img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
-.hr-photo-main::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,74,74,.1) 0%,rgba(10,74,74,.0) 60%)}
-.hr-bot-row{display:grid;grid-template-columns:1fr 1fr}
-.hr-mini-photo{position:relative;overflow:hidden;border-top:3px solid var(--teal-dk)}
-.hr-mini-photo:first-child{border-right:3px solid var(--teal-dk)}
-.hr-mini-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.hr-mini-photo:hover img{transform:scale(1.05)}
-.hr-mini-label{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:10px 14px;
-  background:linear-gradient(to top,rgba(10,74,74,.85),transparent);
-  font-size:.72rem;font-weight:600;color:rgba(250,247,242,.9);
-  text-transform:uppercase;letter-spacing:.5px;
-}
+/* ── HERO ── */
+.hero{display:grid;grid-template-columns:1fr 1fr;padding-top:60px;align-items:stretch}
+.hero-left{background:var(--teal-dk);padding:clamp(48px,5vw,72px) var(--pad) clamp(48px,5vw,72px);display:flex;flex-direction:column;justify-content:flex-start;position:relative;overflow:hidden}
+.hero-left::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 15% 85%,rgba(201,168,76,.08) 0%,transparent 55%),radial-gradient(ellipse at 85% 15%,rgba(14,107,107,.3) 0%,transparent 50%);pointer-events:none}
+.hero-left::after{content:'🐾';font-size:22rem;opacity:.025;position:absolute;bottom:-30px;right:-30px;line-height:1;pointer-events:none;animation:spin 50s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(201,168,76,.1);border:1px solid rgba(201,168,76,.25);color:var(--gold);padding:5px 12px;border-radius:20px;font-size:.66rem;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;margin-bottom:16px;width:fit-content;position:relative;z-index:1}
+.e-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:blink 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5vw,5.5rem);font-weight:300;line-height:1.08;letter-spacing:-.5px;color:var(--cream);margin-bottom:14px;position:relative;z-index:1}
+.hero h1 em{font-style:italic;font-weight:400;display:inline;background:linear-gradient(135deg,var(--gold),var(--gold-lt));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero h1 .ghost{-webkit-text-stroke:1px rgba(201,168,76,.3);-webkit-text-fill-color:transparent}
+.hero-sub{font-size:clamp(15px,1.3vw,17px);line-height:1.75;color:rgba(250,247,242,.42);max-width:400px;margin-bottom:22px;font-weight:300;position:relative;z-index:1}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;position:relative;z-index:1}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);padding:12px 28px;border-radius:3px;font-size:.9375rem;font-weight:600;text-decoration:none;display:inline-block;box-shadow:0 4px 14px rgba(201,168,76,.28);transition:opacity .2s,transform .2s}
+.btn-gold:hover{opacity:.9;transform:translateY(-2px)}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid rgba(250,247,242,.2);padding:12px 28px;border-radius:3px;font-size:.9375rem;font-weight:400;text-decoration:none;display:inline-block;transition:border-color .2s,color .2s}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.hero-stats{display:flex;gap:clamp(16px,2.5vw,36px);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);position:relative;z-index:1}
+.stn{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,2.5vw,2.4rem);font-weight:600;color:var(--cream);letter-spacing:-1px;line-height:1}
+.stn sup{font-size:.75rem;color:var(--gold)}
+.stl{font-size:.62rem;color:rgba(250,247,242,.28);text-transform:uppercase;letter-spacing:.4px;margin-top:3px}
+/* hero right */
+.hero-right{display:grid;grid-template-rows:1fr}
+.hr-top{overflow:hidden;position:relative;height:100%}
+.hr-top img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
 
 /* ── TICKER ── */
-.ticker{background:linear-gradient(90deg,var(--teal),var(--teal-dk));overflow:hidden;padding:12px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.ticker{background:linear-gradient(90deg,var(--teal),var(--teal-dk));overflow:hidden;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
 .ticker-track{display:flex;width:max-content;animation:tick 28s linear infinite}
-.ticker-item{white-space:nowrap;padding:0 clamp(16px,2vw,26px);font-size:.7rem;font-weight:600;color:rgba(250,247,242,.65);text-transform:uppercase;letter-spacing:1.2px;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:8px}
-.ticker-item::before{content:'✦';font-size:.4rem;color:var(--gold);opacity:.8}
+.ticker-item{white-space:nowrap;padding:0 22px;font-size:.68rem;font-weight:600;color:rgba(250,247,242,.6);text-transform:uppercase;letter-spacing:1.1px;border-right:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:7px}
+.ticker-item::before{content:'✦';font-size:.38rem;color:var(--gold);opacity:.8}
 @keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ── SECTION UTILS ── */
-.sec-wrap{padding:clamp(56px,7vw,100px) 5vw}
-.sec-lbl{display:flex;align-items:center;gap:10px;margin-bottom:clamp(24px,3vw,42px)}
-.sec-num{font-size:.66rem;font-weight:600;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:3px 10px;border-radius:20px;letter-spacing:.8px}
-.sec-txt{font-size:.66rem;font-weight:500;color:var(--mid);text-transform:uppercase;letter-spacing:1px}
-.big-h{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.8vw,3.6rem);font-weight:300;line-height:1.05;letter-spacing:-.3px;color:var(--ink);margin-bottom:clamp(32px,4vw,52px)}
-.big-h em{font-style:italic;font-weight:400;color:var(--teal)}
-.big-h.light{color:var(--cream)}
-.big-h.light em{color:var(--gold)}
+/* ── SECTION SHELL ── */
+.sec{padding:var(--sec) var(--pad)}
+.sec.alt{background:var(--warm)}
+.sec.dark{background:var(--teal-dk)}
+.sec-lbl{display:flex;align-items:center;gap:9px;margin-bottom:clamp(18px,2.5vw,34px)}
+.sec-num{font-size:.6875rem;font-weight:600;color:var(--gold);border:1px solid rgba(201,168,76,.3);padding:2px 9px;border-radius:20px;letter-spacing:.7px}
+.sec-txt{font-size:.6875rem;font-weight:500;color:var(--mid);text-transform:uppercase;letter-spacing:.9px}
+.sec-txt.light{color:rgba(250,247,242,.3)}
+.big-h{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3.5vw,3.2rem);font-weight:300;line-height:1.06;letter-spacing:-.2px;color:var(--ink);margin-bottom:clamp(24px,3.5vw,44px)}
+.big-h em{font-style:italic;color:var(--teal)}
+.big-h.lt{color:var(--cream)}
+.big-h.lt em{color:var(--gold)}
 
 /* ── BREEDS ── */
-.breeds-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.breed-card{border-right:1px solid var(--border);transition:background .3s;cursor:pointer;overflow:hidden}
-.breed-card:last-child{border-right:none}
-.breed-card:hover{background:var(--teal-dk)}
-.breed-card:hover .bc-name,.breed-card:hover .bc-trait{color:var(--cream)}
-.breed-card:hover .bc-divider{border-color:rgba(255,255,255,.12)}
-.breed-card:hover .bc-price{color:var(--gold)}
-.breed-card:hover .bc-tag{background:rgba(201,168,76,.15);color:var(--gold)}
-.bc-img{height:200px;overflow:hidden;position:relative;border-bottom:1px solid var(--border)}
-.bc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.breed-card:hover .bc-img img{transform:scale(1.06)}
-.bc-body{padding:clamp(14px,1.5vw,22px)}
-.bc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
-.bc-tag{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:20px;background:rgba(14,107,107,.08);color:var(--teal);text-transform:uppercase;letter-spacing:.3px;transition:all .3s}
-.bc-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;margin-bottom:4px;transition:color .3s}
-.bc-trait{font-size:.74rem;color:var(--mid);margin-bottom:14px;transition:color .3s}
-.bc-divider{border:none;border-top:1px solid var(--border);margin-bottom:12px;transition:border-color .3s}
-.bc-price{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--ink);transition:color .3s}
-.bc-price span{font-size:.7rem;color:var(--mid);font-weight:400;font-family:'Jost',sans-serif}
+.breeds-grid{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.bc{border-right:1px solid var(--border);cursor:pointer;transition:background .3s;overflow:hidden}
+.bc:last-child{border-right:none}
+.bc:hover{background:var(--teal-dk)}
+.bc:hover .bc-name,.bc:hover .bc-trait{color:var(--cream)}
+.bc:hover .bc-divider{border-color:rgba(255,255,255,.1)}
+.bc:hover .bc-price{color:var(--gold)}
+.bc:hover .bc-tag{background:rgba(201,168,76,.15);color:var(--gold)}
+.bc:hover .bc-photo img{transform:scale(1.07)}
+.bc-photo{height:170px;overflow:hidden;border-bottom:1px solid var(--border);transition:border-color .3s}
+.bc:hover .bc-photo{border-color:rgba(255,255,255,.06)}
+.bc-photo img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.bc-body{padding:clamp(12px,1.5vw,18px)}
+.bc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px}
+.bc-tag{font-size:.6875rem;font-weight:600;padding:2px 7px;border-radius:20px;background:rgba(14,107,107,.08);color:var(--teal);text-transform:uppercase;letter-spacing:.2px;transition:all .3s}
+.bc-name{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;margin-bottom:3px;transition:color .3s}
+.bc-trait{font-size:.8125rem;color:var(--mid);margin-bottom:12px;transition:color .3s}
+.bc-divider{border:none;border-top:1px solid var(--border);margin-bottom:10px;transition:border-color .3s}
+.bc-price{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--ink);transition:color .3s}
+.bc-price span{font-size:.68rem;color:var(--mid);font-weight:400;font-family:'Jost',sans-serif}
+.breeds-cta{text-align:center;margin-top:28px}
 
 /* ── SERVICES ── */
-.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--border);border-radius:8px;overflow:hidden}
-.svc{border-right:1px solid var(--border);transition:background .3s;overflow:hidden}
+.svc-grid{display:grid;grid-template-columns:repeat(5,1fr);border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.svc{border-right:1px solid var(--border);overflow:hidden;transition:background .3s}
 .svc:last-child{border-right:none}
 .svc:hover{background:var(--teal)}
 .svc:hover .svc-name,.svc:hover .svc-desc{color:var(--cream)}
-.svc:hover .svc-img-wrap{opacity:.7}
-.svc-img-wrap{height:140px;overflow:hidden;border-bottom:1px solid var(--border);transition:opacity .3s}
-.svc-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
-.svc:hover .svc-img-wrap img{transform:scale(1.08)}
-.svc-body{padding:clamp(16px,1.8vw,24px)}
-.svc-name{font-size:.88rem;font-weight:600;margin-bottom:5px;transition:color .3s}
-.svc-desc{font-size:.75rem;line-height:1.58;color:var(--mid);transition:color .3s}
+.svc:hover .svc-img img{transform:scale(1.08)}
+.svc-img{height:120px;overflow:hidden;border-bottom:1px solid var(--border)}
+.svc-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.svc-body{padding:14px}
+.svc-name{font-size:.9375rem;font-weight:600;margin-bottom:4px;transition:color .3s}
+.svc-desc{font-size:.875rem;line-height:1.6;color:var(--mid);transition:color .3s}
 
 /* ── BOARDING ── */
-.boarding-wrap{display:grid;grid-template-columns:1fr 1fr;background:var(--teal-dk)}
-.boarding-left{padding:clamp(56px,7vw,100px) clamp(24px,5vw,64px)}
-.boarding-left .sec-num{color:var(--gold);border-color:rgba(201,168,76,.3)}
-.boarding-left .sec-txt{color:rgba(250,247,242,.3)}
-.boarding-desc{font-size:.9rem;color:rgba(250,247,242,.4);line-height:1.75;margin-bottom:clamp(22px,3vw,38px);max-width:400px}
-.plan-list{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);border-radius:6px;overflow:hidden;margin-bottom:clamp(22px,3vw,38px)}
-.plan-row{display:flex;align-items:center;justify-content:space-between;padding:clamp(14px,1.5vw,20px) clamp(16px,2vw,24px);border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s}
+.boarding-grid{display:grid;grid-template-columns:1fr 1fr}
+.boarding-left{padding:var(--sec) var(--pad)}
+.boarding-desc{font-size:.9375rem;color:rgba(250,247,242,.4);line-height:1.72;margin-bottom:clamp(18px,2.5vw,32px);max-width:380px}
+.plan-list{border:1px solid rgba(255,255,255,.08);border-radius:5px;overflow:hidden;margin-bottom:clamp(18px,2.5vw,30px)}
+.plan-row{display:flex;align-items:center;justify-content:space-between;padding:clamp(12px,1.5vw,17px) clamp(14px,2vw,20px);border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s}
 .plan-row:last-child{border-bottom:none}
 .plan-row:hover{background:rgba(255,255,255,.04)}
-.plan-l{display:flex;align-items:center;gap:14px}
+.plan-l{display:flex;align-items:center;gap:12px}
 .plan-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
 .plan-dot.s{background:var(--sage)}
-.plan-nm{font-size:.88rem;font-weight:500;color:var(--cream)}
-.plan-ds{font-size:.7rem;color:rgba(250,247,242,.28);margin-top:2px}
-.plan-pr{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:600;color:var(--gold)}
+.plan-nm{font-size:.9375rem;font-weight:500;color:var(--cream)}
+.plan-ds{font-size:.68rem;color:rgba(250,247,242,.26);margin-top:1px}
+.plan-pr{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--gold);white-space:nowrap}
 .plan-pr.s{color:var(--sage)}
-.plan-pr span{font-size:.66rem;color:rgba(250,247,242,.25);font-weight:400;font-family:'Jost',sans-serif}
-
-/* boarding right — photo */
-.boarding-right{position:relative;overflow:hidden;min-height:500px}
-.boarding-right img{width:100%;height:100%;object-fit:cover;object-position:center}
-.boarding-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to right,rgba(10,74,74,.55) 0%,rgba(10,74,74,.1) 100%);
-}
-.boarding-photo-card{
-  position:absolute;bottom:36px;right:36px;
-  background:rgba(10,74,74,.85);
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(201,168,76,.2);
-  border-radius:8px;padding:20px 24px;
-  max-width:240px;
-}
-.bpc-title{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--cream);margin-bottom:12px}
-.perk{display:flex;align-items:center;gap:10px;font-size:.78rem;color:rgba(250,247,242,.75);margin-bottom:8px}
+.plan-pr span{font-size:.64rem;color:rgba(250,247,242,.22);font-weight:400;font-family:'Jost',sans-serif}
+.boarding-right{position:relative;overflow:hidden;min-height:420px}
+.boarding-right img{width:100%;height:100%;object-fit:cover}
+.b-overlay{position:absolute;inset:0;background:linear-gradient(to right,rgba(10,74,74,.5) 0%,transparent 60%)}
+.b-card{position:absolute;bottom:24px;right:24px;background:rgba(10,74,74,.88);backdrop-filter:blur(10px);border:1px solid rgba(201,168,76,.2);border-radius:7px;padding:18px 20px;max-width:220px}
+.b-card-title{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:var(--cream);margin-bottom:10px;line-height:1.3}
+.perk{display:flex;align-items:center;gap:8px;font-size:.875rem;color:rgba(250,247,242,.72);margin-bottom:6px}
 .perk:last-child{margin-bottom:0}
-.perk-icon{font-size:.95rem}
 
 /* ── GALLERY ── */
-.gallery-wrap{padding:clamp(56px,7vw,100px) 5vw;background:var(--warm)}
-.gallery-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  grid-template-rows:240px 240px;
-  gap:12px;
-}
-.gal-item{border-radius:6px;overflow:hidden;position:relative;cursor:pointer}
-.gal-item:first-child{grid-column:1/3;grid-row:1/2}
-.gal-item:nth-child(3){grid-column:3/4;grid-row:1/2}
-.gal-item:nth-child(4){grid-column:4/5;grid-row:1/2}
-.gal-item:nth-child(5){grid-column:1/2;grid-row:2/3}
-.gal-item:nth-child(6){grid-column:2/4;grid-row:2/3}
-.gal-item:nth-child(7){grid-column:4/5;grid-row:2/3}
+.gal-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:200px 200px;gap:8px}
+.gal-item{border-radius:5px;overflow:hidden;position:relative;cursor:pointer}
+.gal-item:first-child{grid-column:1/3}
+.gal-item:nth-child(6){grid-column:2/4}
 .gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .gal-item:hover img{transform:scale(1.06)}
-.gal-item::after{content:'';position:absolute;inset:0;background:rgba(10,74,74,0);transition:background .3s}
-.gal-item:hover::after{background:rgba(10,74,74,.15)}
-.gal-label{position:absolute;bottom:0;left:0;right:0;padding:12px 16px;background:linear-gradient(to top,rgba(10,74,74,.7),transparent);font-size:.72rem;font-weight:600;color:rgba(250,247,242,.9);text-transform:uppercase;letter-spacing:.5px;transform:translateY(100%);transition:transform .35s}
+.gal-label{position:absolute;bottom:0;left:0;right:0;padding:10px 14px;background:linear-gradient(to top,rgba(10,74,74,.75),transparent);font-size:.68rem;font-weight:600;color:rgba(250,247,242,.9);text-transform:uppercase;letter-spacing:.4px;transform:translateY(100%);transition:transform .3s}
 .gal-item:hover .gal-label{transform:translateY(0)}
 
 /* ── CARE ── */
-.care-grid{display:grid;grid-template-columns:1.8fr 1fr 1fr;grid-template-rows:auto auto;gap:14px}
-.care-big{grid-row:1/3;border-radius:8px;overflow:hidden;position:relative;min-height:460px}
-.care-big-img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .5s}
-.care-big:hover .care-big-img{transform:scale(1.03)}
-.care-big-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,74,74,.92) 0%,rgba(10,74,74,.3) 50%,rgba(10,74,74,.1) 100%)}
-.care-big-content{position:absolute;bottom:0;left:0;right:0;padding:clamp(24px,3vw,40px)}
-.care-badge{display:inline-block;font-size:.62rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);border-radius:20px;padding:4px 12px;margin-bottom:14px}
-.care-big-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.5rem,2.2vw,2rem);font-weight:300;color:var(--cream);margin-bottom:10px;line-height:1.2}
-.care-big-desc{font-size:.82rem;color:rgba(250,247,242,.5);line-height:1.7;margin-bottom:18px;max-width:320px}
-.care-list{display:flex;flex-direction:column;gap:7px}
-.care-item{font-size:.8rem;color:rgba(250,247,242,.6);display:flex;align-items:center;gap:9px}
-.care-item::before{content:'✦';color:var(--gold);font-size:.45rem}
-
-.care-sm{border-radius:8px;overflow:hidden;position:relative;min-height:180px;transition:transform .2s}
-.care-sm:hover{transform:translateY(-4px)}
+.care-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr;grid-template-rows:auto auto;gap:10px}
+.care-big{grid-row:1/3;border-radius:6px;overflow:hidden;position:relative;min-height:420px}
+.care-big img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.care-big:hover img{transform:scale(1.03)}
+.care-big-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,74,74,.93) 0%,rgba(10,74,74,.25) 55%,rgba(10,74,74,.05) 100%)}
+.care-big-cnt{position:absolute;bottom:0;left:0;right:0;padding:clamp(20px,2.5vw,34px)}
+.care-badge{display:inline-block;font-size:.6rem;font-weight:600;letter-spacing:.9px;text-transform:uppercase;color:var(--gold);background:rgba(201,168,76,.12);border-radius:20px;padding:3px 10px;margin-bottom:12px}
+.care-big-t{font-family:'Cormorant Garamond',serif;font-size:clamp(1.3rem,2vw,1.8rem);font-weight:300;color:var(--cream);margin-bottom:8px;line-height:1.2}
+.care-big-d{font-size:.78rem;color:rgba(250,247,242,.45);line-height:1.65;margin-bottom:14px;max-width:300px}
+.care-list{display:flex;flex-direction:column;gap:6px}
+.care-item{font-size:.76rem;color:rgba(250,247,242,.55);display:flex;align-items:center;gap:8px}
+.care-item::before{content:'✦';color:var(--gold);font-size:.4rem;flex-shrink:0}
+.care-sm{border-radius:6px;overflow:hidden;position:relative;min-height:160px;transition:transform .2s}
+.care-sm:hover{transform:translateY(-3px)}
 .care-sm img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
 .care-sm:hover img{transform:scale(1.06)}
-.care-sm-overlay{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(16px,2vw,24px)}
-.care-sm.teal-ov .care-sm-overlay{background:linear-gradient(to top,rgba(14,107,107,.88) 0%,rgba(14,107,107,.2) 100%)}
-.care-sm.gold-ov .care-sm-overlay{background:linear-gradient(to top,rgba(140,95,20,.88) 0%,rgba(140,95,20,.2) 100%)}
-.care-sm.cream-ov .care-sm-overlay{background:linear-gradient(to top,rgba(26,26,46,.78) 0%,rgba(26,26,46,.15) 100%)}
-.care-sm.ink-ov .care-sm-overlay{background:linear-gradient(to top,rgba(10,74,74,.9) 0%,rgba(10,74,74,.2) 100%)}
-.csm-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:4px}
-.csm-desc{font-size:.74rem;line-height:1.55;color:rgba(255,255,255,.65)}
+.care-sm-ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:clamp(14px,1.5vw,20px)}
+.teal-ov .care-sm-ov{background:linear-gradient(to top,rgba(14,107,107,.9) 0%,rgba(14,107,107,.15) 100%)}
+.gold-ov .care-sm-ov{background:linear-gradient(to top,rgba(120,80,10,.9) 0%,rgba(120,80,10,.1) 100%)}
+.ink-ov .care-sm-ov{background:linear-gradient(to top,rgba(10,74,74,.92) 0%,rgba(10,74,74,.15) 100%)}
+.dk-ov .care-sm-ov{background:linear-gradient(to top,rgba(26,26,46,.9) 0%,rgba(26,26,46,.1) 100%)}
+.csm-t{font-family:'Cormorant Garamond',serif;font-size:1rem;font-weight:600;color:#fff;margin-bottom:3px}
+.csm-d{font-size:.72rem;line-height:1.5;color:rgba(255,255,255,.6)}
 
 /* ── TESTIMONIALS ── */
-.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.testi-card{background:var(--white);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:transform .2s,box-shadow .2s}
-.testi-card:hover{transform:translateY(-4px);box-shadow:0 10px 36px rgba(14,107,107,.12)}
-.testi-card:hover .tc-border{width:100%}
-.tc-border{height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));width:0;transition:width .4s}
-.tc-body{padding:clamp(20px,2.5vw,32px)}
-.tc-q{font-family:'Cormorant Garamond',serif;font-size:3rem;color:var(--teal);opacity:.22;line-height:.6;margin-bottom:12px}
-.tc-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;line-height:1.72;color:var(--ink);margin-bottom:22px}
-.tc-foot{display:flex;align-items:center;gap:12px}
-.tc-avatar{width:44px;height:44px;border-radius:50%;overflow:hidden;border:2px solid var(--border);flex-shrink:0}
-.tc-avatar img{width:100%;height:100%;object-fit:cover}
-.tc-name{font-size:.85rem;font-weight:600;color:var(--teal)}
-.tc-pet{font-size:.7rem;color:var(--mid);margin-top:2px}
-.tc-stars{margin-left:auto;color:var(--gold);font-size:.75rem;letter-spacing:2px}
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.tc{background:var(--white);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:transform .2s,box-shadow .2s}
+.tc:hover{transform:translateY(-3px);box-shadow:0 8px 28px rgba(14,107,107,.1)}
+.tc-bar{height:3px;background:linear-gradient(90deg,var(--teal),var(--gold));width:0;transition:width .45s}
+.tc:hover .tc-bar{width:100%}
+.tc-body{padding:clamp(18px,2vw,28px)}
+.tc-q{font-family:'Cormorant Garamond',serif;font-size:2.8rem;color:var(--teal);opacity:.2;line-height:.55;margin-bottom:12px}
+.tc-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.98rem;line-height:1.7;color:var(--ink);margin-bottom:20px}
+.tc-foot{display:flex;align-items:center;gap:10px}
+.tc-av{width:40px;height:40px;border-radius:50%;overflow:hidden;border:2px solid var(--border);flex-shrink:0}
+.tc-av img{width:100%;height:100%;object-fit:cover}
+.tc-name{font-size:.82rem;font-weight:600;color:var(--teal)}
+.tc-pet{font-size:.68rem;color:var(--mid);margin-top:1px}
+.tc-stars{margin-left:auto;color:var(--gold);font-size:.72rem;letter-spacing:1.5px}
 
 /* ── CONTACT ── */
-.contact-wrap{display:grid;grid-template-columns:1fr 1fr;background:var(--teal-dk)}
-.contact-left{padding:clamp(56px,7vw,100px) clamp(24px,5vw,64px)}
-.contact-left .sec-num{color:var(--gold);border-color:rgba(201,168,76,.3)}
-.contact-left .sec-txt{color:rgba(250,247,242,.3)}
-.contact-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2.2rem,3.8vw,4rem);font-weight:300;letter-spacing:-.3px;line-height:1;color:var(--cream);margin-bottom:14px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr}
+.contact-left{padding:var(--sec) var(--pad)}
+.contact-left h2{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:300;letter-spacing:-.2px;line-height:1;color:var(--cream);margin-bottom:12px}
 .contact-left h2 em{font-style:italic;color:var(--gold)}
-.contact-left p{font-size:.88rem;color:rgba(250,247,242,.38);line-height:1.75;margin-bottom:clamp(26px,3vw,40px);max-width:380px}
-.info-list{display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.08);border-radius:6px;overflow:hidden}
-.info-row{display:flex;align-items:center;gap:14px;padding:clamp(13px,1.5vw,17px) clamp(16px,2vw,22px);border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s}
+.contact-left p{font-size:.9375rem;color:rgba(250,247,242,.36);line-height:1.72;margin-bottom:clamp(22px,2.5vw,36px);max-width:360px}
+.info-list{border:1px solid rgba(255,255,255,.08);border-radius:5px;overflow:hidden}
+.info-row{display:flex;align-items:center;gap:12px;padding:clamp(12px,1.4vw,15px) clamp(14px,1.8vw,20px);border-bottom:1px solid rgba(255,255,255,.06);transition:background .2s}
 .info-row:last-child{border-bottom:none}
 .info-row:hover{background:rgba(255,255,255,.04)}
-.info-icon{font-size:.95rem;width:26px;text-align:center;flex-shrink:0}
-.info-key{font-size:.62rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.5px}
-.info-val{font-size:.84rem;color:var(--cream);margin-top:2px}
-
-.contact-right{background:rgba(255,255,255,.025);border-left:1px solid rgba(255,255,255,.06);padding:clamp(56px,7vw,100px) clamp(24px,4vw,52px)}
-.contact-right h3{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--cream);margin-bottom:26px}
-.f-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.f-group{margin-bottom:12px}
-.f-group label{display:block;font-size:.62rem;font-weight:600;color:rgba(250,247,242,.28);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-.f-group input,.f-group select,.f-group textarea{width:100%;padding:11px 14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:3px;color:var(--cream);font-family:'Jost',sans-serif;font-size:.86rem;outline:none;transition:border-color .2s}
-.f-group input:focus,.f-group select:focus,.f-group textarea:focus{border-color:var(--gold)}
-.f-group select option{background:#0A4A4A}
-.f-group textarea{resize:vertical;min-height:82px}
-.f-submit{width:100%;padding:13px;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);border:none;border-radius:3px;font-family:'Jost',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.3px;transition:opacity .2s,transform .15s;box-shadow:0 4px 14px rgba(201,168,76,.22)}
+.info-icon{width:24px;text-align:center;font-size:.9rem;flex-shrink:0}
+.info-key{font-size:.6rem;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.4px}
+.info-val{font-size:.9375rem;color:var(--cream);margin-top:1px}
+.contact-right{background:rgba(255,255,255,.025);border-left:1px solid rgba(255,255,255,.06);padding:var(--sec) var(--pad)}
+.contact-right h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;color:var(--cream);margin-bottom:22px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:.6rem;font-weight:600;color:rgba(250,247,242,.28);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:3px;color:var(--cream);font-family:'Jost',sans-serif;font-size:1rem;outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold)}
+.fg select option{background:#0A4A4A}
+.fg textarea{resize:vertical;min-height:80px}
+.f-submit{width:100%;padding:12px;background:linear-gradient(135deg,var(--gold),var(--gold-lt));color:var(--ink);border:none;border-radius:3px;font-family:'Jost',sans-serif;font-size:.9375rem;font-weight:600;cursor:pointer;margin-top:6px;letter-spacing:.2px;box-shadow:0 4px 12px rgba(201,168,76,.2);transition:opacity .2s,transform .15s}
 .f-submit:hover{opacity:.9;transform:translateY(-1px)}
 
 /* ── FOOTER ── */
-footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
-.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(22px,3vw,44px);padding-bottom:clamp(28px,3vw,42px);border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:clamp(18px,2vw,26px)}
-.ft-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.ft-logo-img{width:34px;height:34px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(201,168,76,.4)}
+footer{background:#071212;padding:clamp(32px,4vw,50px) var(--pad) clamp(16px,2vw,22px)}
+.ft-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(18px,3vw,40px);padding-bottom:clamp(24px,3vw,36px);border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:clamp(14px,2vw,22px)}
+.ft-brand-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ft-logo-img{width:30px;height:30px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(201,168,76,.4)}
 .ft-logo-img img{width:100%;height:100%;object-fit:cover}
-.ft-brand{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;color:var(--cream)}
+.ft-brand{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:600;color:var(--cream)}
 .ft-brand span{color:var(--gold)}
-.ft-desc{font-size:.78rem;color:rgba(250,247,242,.25);line-height:1.7;max-width:230px}
-.ft-col h4{font-size:.62rem;font-weight:600;color:rgba(250,247,242,.2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px}
-.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-.ft-col a{font-size:.8rem;color:rgba(250,247,242,.36);text-decoration:none;transition:color .2s}
+.ft-desc{font-size:.76rem;color:rgba(250,247,242,.22);line-height:1.68;max-width:220px}
+.ft-col h4{font-size:.6rem;font-weight:600;color:rgba(250,247,242,.18);text-transform:uppercase;letter-spacing:.9px;margin-bottom:12px}
+.ft-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}
+.ft-col a{font-size:.78rem;color:rgba(250,247,242,.34);text-decoration:none;transition:color .2s}
 .ft-col a:hover{color:var(--gold)}
 .ft-bottom{display:flex;justify-content:space-between;align-items:center}
-.ft-copy{font-size:.7rem;color:rgba(250,247,242,.16)}
-.ft-paw{font-size:.9rem;opacity:.12}
+.ft-copy{font-size:.68rem;color:rgba(250,247,242,.14)}
+.ft-paw{font-size:.85rem;opacity:.1}
 
-/* ── RESPONSIVE ── */
-@media(max-width:1100px){
-  .breeds-grid{grid-template-columns:1fr 1fr}
-  .svc-grid{grid-template-columns:1fr 1fr 1fr}
-  .care-grid{grid-template-columns:1fr 1fr}
-  .care-big{grid-row:auto;min-height:320px}
-  .ft-grid{grid-template-columns:1fr 1fr}
-  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:200px 200px 200px}
-  .gal-item:first-child,.gal-item:nth-child(3),.gal-item:nth-child(4),.gal-item:nth-child(5),.gal-item:nth-child(6),.gal-item:nth-child(7){grid-column:auto;grid-row:auto}
-}
+/* ════════════════════════════
+   MOBILE — max 768px
+════════════════════════════ */
 @media(max-width:768px){
-  nav{padding:0 4vw}
-  .nav-links,.nav-pill{display:none}
+  /* nav */
+  .nav-links{display:none}
+  .nav-cta{display:none}
   .hamburger{display:flex}
-  .hero{grid-template-columns:1fr}
-  .hero-right{display:none}
-  .hero-left{padding:50px 5vw 60px}
-  .boarding-wrap{grid-template-columns:1fr}
-  .boarding-right{min-height:300px}
-  .contact-wrap{grid-template-columns:1fr}
-  .testi-grid{grid-template-columns:1fr}
+
+  /* hero single column */
+  .hero{grid-template-columns:1fr;min-height:auto}
+  .hero-left{padding:36px var(--pad) 40px}
+  .hero-right{display:none} /* replaced by photo below */
+
+  /* after hero, show a single full-width photo strip */
+  .mobile-hero-photo{display:block;height:240px;overflow:hidden}
+  .mobile-hero-photo img{width:100%;height:100%;object-fit:cover;object-position:center 30%}
+
+  /* breeds — 2 col on tablet, 1 col on phone */
+  .breeds-grid{grid-template-columns:1fr 1fr}
+  .bc{border-bottom:1px solid var(--border)}
+  .bc:nth-child(odd){border-right:1px solid var(--border)}
+  .bc:nth-child(even){border-right:none}
+  .bc:nth-last-child(-n+2){border-bottom:none}
+
+  /* services — 2 col */
   .svc-grid{grid-template-columns:1fr 1fr}
-  .care-grid{grid-template-columns:1fr}
-  .f-row{grid-template-columns:1fr}
-  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,180px)}
-  .gal-item{grid-column:auto!important;grid-row:auto!important}
+  .svc{border-bottom:1px solid var(--border)}
+  .svc:nth-child(odd){border-right:1px solid var(--border)}
+  .svc:nth-child(even){border-right:none}
+  .svc:last-child{grid-column:1/3}
+
+  /* boarding stack */
+  .boarding-grid{grid-template-columns:1fr}
+  .boarding-right{min-height:260px}
+  .b-card{right:14px;bottom:14px;max-width:190px;padding:14px 16px}
+
+  /* gallery — 2 col */
+  .gal-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(4,150px)}
+  .gal-item:first-child,.gal-item:nth-child(6){grid-column:auto}
   .gal-label{transform:translateY(0)}
+
+  /* care — 1 col */
+  .care-grid{grid-template-columns:1fr}
+  .care-big{grid-row:auto;min-height:280px}
+
+  /* testimonials — 1 col */
+  .testi-grid{grid-template-columns:1fr}
+
+  /* contact stack */
+  .contact-grid{grid-template-columns:1fr}
+  .contact-right{border-left:none;border-top:1px solid rgba(255,255,255,.06)}
+
+  /* footer 2 col */
+  .ft-grid{grid-template-columns:1fr 1fr}
+  .f-row{grid-template-columns:1fr}
 }
+
 @media(max-width:480px){
   .breeds-grid{grid-template-columns:1fr}
+  .bc{border-right:none!important}
+  .bc{border-bottom:1px solid var(--border)}
+  .bc:last-child{border-bottom:none}
   .svc-grid{grid-template-columns:1fr}
+  .svc:last-child{grid-column:auto}
+  .svc{border-right:none!important}
   .ft-grid{grid-template-columns:1fr}
-  .hero h1{font-size:2.8rem}
-  .nav-cta{font-size:.72rem;padding:8px 14px}
-  .testi-grid{grid-template-columns:1fr}
+  .hero h1{font-size:2.6rem}
+  .nav-name{font-size:1.1rem}
 }
+
+/* hide mobile photo strip on desktop */
+
+/* iOS input zoom fix — must be 16px on mobile */
+@media(max-width:768px){
+  .fg input,.fg select,.fg textarea{font-size:16px}
+}
+.mobile-hero-photo{display:none}
 </style>
 </head>
 <body>
 
-<!-- WA FLOAT -->
-<a class="wa-btn" href="https://wa.me/919876543210?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20The%20Dog%20Club!" target="_blank" aria-label="WhatsApp">
+<!-- WHATSAPP -->
+<a class="wa-float" href="https://wa.me/919876543210?text=Hi%2C%20I%27d%20like%20to%20enquire%20about%20The%20Dog%20Club!" target="_blank" aria-label="Chat on WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 <div class="wa-ring"></div>
@@ -407,7 +373,7 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
 <!-- NAV -->
 <nav>
   <a class="nav-brand" href="#">
-    <div class="nav-logo-img"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=80&q=80&fit=crop" alt="The Dog Club" loading="lazy"></div>
+    <div class="nav-logo-img"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=80&q=80&fit=crop" alt="The Dog Club"></div>
     <span class="nav-name">The Dog <span>Club</span></span>
   </a>
   <ul class="nav-links">
@@ -417,26 +383,29 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
     <li><a href="#care">Care</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div class="nav-right">
-    <span class="nav-pill">Open 9am–7pm</span>
-    <a href="#contact" class="nav-cta">Enquire Now</a>
-    <div class="hamburger" id="ham" onclick="toggleMenu()"><span></span><span></span><span></span></div>
-  </div>
+  <a href="#contact" class="nav-cta">Enquire Now</a>
+  <button class="hamburger" id="ham" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div id="scroll-bar"></div>
 </nav>
-<div class="mob-nav" id="mob">
-  <a href="#breeds" onclick="closeMenu()">Our Breeds</a>
-  <a href="#boarding" onclick="closeMenu()">Boarding & Stay</a>
-  <a href="#gallery" onclick="closeMenu()">Gallery</a>
-  <a href="#care" onclick="closeMenu()">Care Services</a>
-  <a href="#contact" onclick="closeMenu()">Contact</a>
-  <a href="#contact" class="mob-cta" onclick="closeMenu()">Enquire Now →</a>
+
+<!-- MOBILE DRAWER -->
+<div class="mob-drawer" id="drawer">
+  <a href="#breeds" onclick="closeMenu()"><span class="mob-icon">🐕</span> Our Breeds</a>
+  <a href="#boarding" onclick="closeMenu()"><span class="mob-icon">🏡</span> Boarding & Stay</a>
+  <a href="#gallery" onclick="closeMenu()"><span class="mob-icon">📸</span> Gallery</a>
+  <a href="#care" onclick="closeMenu()"><span class="mob-icon">✂️</span> Care Services</a>
+  <a href="#contact" onclick="closeMenu()"><span class="mob-icon">📞</span> Contact Us</a>
+  <a href="https://wa.me/919876543210" target="_blank" onclick="closeMenu()"><span class="mob-icon">💬</span> WhatsApp Us</a>
+  <div class="mob-cta-row"><a href="#contact" class="mob-cta-btn" onclick="closeMenu()">Enquire Now →</a></div>
 </div>
 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-left">
     <div class="hero-eyebrow"><span class="e-dot"></span> Premium Dog Breeders & Pet Retreat</div>
-    <h1>Dogs<br>that <em>love</em><br><span class="ghost">back.</span></h1>
+    <h1>Dogs that<br><em>love</em> back.</h1>
     <p class="hero-sub">Ethically bred, health-certified puppies. Warm boarding, expert grooming, and compassionate care — we help you raise them right from day one.</p>
     <div class="hero-btns">
       <a href="#breeds" class="btn-gold">Meet Our Dogs</a>
@@ -444,27 +413,19 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
     </div>
     <div class="hero-stats">
       <div><div class="stn">1,200<sup>+</sup></div><div class="stl">Families served</div></div>
-      <div><div class="stn">18</div><div class="stl">Breeds available</div></div>
-      <div><div class="stn">15<sup>yrs</sup></div><div class="stl">In business</div></div>
+      <div><div class="stn">18</div><div class="stl">Breeds</div></div>
+      <div><div class="stn">15<sup>yrs</sup></div><div class="stl">Experience</div></div>
     </div>
   </div>
   <div class="hero-right">
-    <div class="hr-photo-main">
-      <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=900&q=85&fit=crop" alt="Golden Retriever" loading="eager">
-      <div class="hr-photo-main::after"></div>
-    </div>
-    <div class="hr-bot-row">
-      <div class="hr-mini-photo">
-        <img src="https://images.unsplash.com/photo-1558929996-da64ba858215?w=500&q=80&fit=crop" alt="German Shepherd" loading="lazy">
-        <div class="hr-mini-label">German Shepherd</div>
-      </div>
-      <div class="hr-mini-photo">
-        <img src="https://images.unsplash.com/photo-1591946614720-90a587da4a36?w=500&q=80&fit=crop" alt="Dog Boarding" loading="lazy">
-        <div class="hr-mini-label">Premium Boarding</div>
-      </div>
-    </div>
+    <div class="hr-top"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=900&q=85&fit=crop" alt="Golden Retriever" loading="eager"></div>
   </div>
 </section>
+
+<!-- MOBILE HERO PHOTO (only shows on mobile) -->
+<div class="mobile-hero-photo">
+  <img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80&fit=crop&crop=center" alt="Our Dogs" loading="lazy">
+</div>
 
 <!-- TICKER -->
 <div class="ticker">
@@ -475,111 +436,84 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
 </div>
 
 <!-- BREEDS -->
-<section class="sec-wrap" id="breeds" style="background:var(--cream)">
+<section class="sec" id="breeds">
   <div class="sec-lbl"><span class="sec-num">01</span><span class="sec-txt">Our Breeds</span></div>
   <h2 class="big-h">Find your <em>perfect</em> companion.</h2>
   <div class="breeds-grid">
-    <div class="breed-card">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80&fit=crop" alt="Golden Retriever" loading="lazy"></div>
-      <div class="bc-body"><div class="bc-tags"><span class="bc-tag">KCI</span><span class="bc-tag">Family</span></div><div class="bc-name">Golden Retriever</div><div class="bc-trait">Gentle · Friendly · Intelligent</div><hr class="bc-divider"><div class="bc-price">₹35,000 <span>onwards</span></div></div>
-    </div>
-    <div class="breed-card">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1558929996-da64ba858215?w=400&q=80&fit=crop&crop=face" alt="German Shepherd" loading="lazy"></div>
-      <div class="bc-body"><div class="bc-tags"><span class="bc-tag">KCI</span><span class="bc-tag">Guard</span></div><div class="bc-name">German Shepherd</div><div class="bc-trait">Loyal · Confident · Courageous</div><hr class="bc-divider"><div class="bc-price">₹28,000 <span>onwards</span></div></div>
-    </div>
-    <div class="breed-card">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80&fit=crop" alt="Labrador" loading="lazy"></div>
-      <div class="bc-body"><div class="bc-tags"><span class="bc-tag">Kid-safe</span></div><div class="bc-name">Labrador Retriever</div><div class="bc-trait">Playful · Eager · Outgoing</div><hr class="bc-divider"><div class="bc-price">₹22,000 <span>onwards</span></div></div>
-    </div>
-    <div class="breed-card">
-      <div class="bc-img"><img src="https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=400&q=80&fit=crop" alt="Poodle" loading="lazy"></div>
-      <div class="bc-body"><div class="bc-tags"><span class="bc-tag">Hypo</span><span class="bc-tag">Smart</span></div><div class="bc-name">Miniature Poodle</div><div class="bc-trait">Alert · Trainable · Elegant</div><hr class="bc-divider"><div class="bc-price">₹45,000 <span>onwards</span></div></div>
-    </div>
+    <div class="bc"><div class="bc-photo"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=400&q=80&fit=crop" alt="Golden Retriever" loading="lazy"></div><div class="bc-body"><div class="bc-tags"><span class="bc-tag">KCI</span><span class="bc-tag">Family</span></div><div class="bc-name">Golden Retriever</div><div class="bc-trait">Gentle · Friendly · Intelligent</div><hr class="bc-divider"><div class="bc-price">₹35,000 <span>onwards</span></div></div></div>
+    <div class="bc"><div class="bc-photo"><img src="https://images.unsplash.com/photo-1558929996-da64ba858215?w=400&q=80&fit=crop&crop=face" alt="German Shepherd" loading="lazy"></div><div class="bc-body"><div class="bc-tags"><span class="bc-tag">KCI</span><span class="bc-tag">Guard</span></div><div class="bc-name">German Shepherd</div><div class="bc-trait">Loyal · Confident · Courageous</div><hr class="bc-divider"><div class="bc-price">₹28,000 <span>onwards</span></div></div></div>
+    <div class="bc"><div class="bc-photo"><img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80&fit=crop" alt="Labrador" loading="lazy"></div><div class="bc-body"><div class="bc-tags"><span class="bc-tag">Kid-safe</span></div><div class="bc-name">Labrador Retriever</div><div class="bc-trait">Playful · Eager · Outgoing</div><hr class="bc-divider"><div class="bc-price">₹22,000 <span>onwards</span></div></div></div>
+    <div class="bc"><div class="bc-photo"><img src="https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=400&q=80&fit=crop" alt="Poodle" loading="lazy"></div><div class="bc-body"><div class="bc-tags"><span class="bc-tag">Hypo</span><span class="bc-tag">Smart</span></div><div class="bc-name">Miniature Poodle</div><div class="bc-trait">Alert · Trainable · Elegant</div><hr class="bc-divider"><div class="bc-price">₹45,000 <span>onwards</span></div></div></div>
   </div>
-  <div style="text-align:center;margin-top:34px"><a href="#contact" class="btn-gold">Enquire About a Puppy →</a></div>
+  <div class="breeds-cta"><a href="#contact" class="btn-gold">Enquire About a Puppy →</a></div>
 </section>
 
 <!-- SERVICES -->
-<section class="sec-wrap" style="padding-top:0;background:var(--cream)">
+<section class="sec alt" style="padding-top:0">
   <div class="sec-lbl"><span class="sec-num">02</span><span class="sec-txt">Our Services</span></div>
   <div class="svc-grid">
-    <div class="svc">
-      <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&q=75&fit=crop" alt="Dog Grooming" loading="lazy"></div>
-      <div class="svc-body"><div class="svc-name">Grooming</div><div class="svc-desc">Bath, brush, trim, nail & ear care by certified groomers.</div></div>
-    </div>
-    <div class="svc">
-      <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=75&fit=crop" alt="Vet Care" loading="lazy"></div>
-      <div class="svc-body"><div class="svc-name">Vet Care</div><div class="svc-desc">Vaccinations, deworming & health checks on demand.</div></div>
-    </div>
-    <div class="svc">
-      <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=400&q=75&fit=crop" alt="Dog Training" loading="lazy"></div>
-      <div class="svc-body"><div class="svc-name">Training</div><div class="svc-desc">Obedience, agility & behaviour with certified trainers.</div></div>
-    </div>
-    <div class="svc">
-      <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&q=75&fit=crop" alt="Dog Transport" loading="lazy"></div>
-      <div class="svc-body"><div class="svc-name">Pick-up & Drop</div><div class="svc-desc">Doorstep transport for boarding, grooming & vet visits.</div></div>
-    </div>
-    <div class="svc">
-      <div class="svc-img-wrap"><img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&q=75&fit=crop" alt="Dog Nutrition" loading="lazy"></div>
-      <div class="svc-body"><div class="svc-name">Nutrition</div><div class="svc-desc">Breed-specific diet plans and premium food supply.</div></div>
-    </div>
+    <div class="svc"><div class="svc-img"><img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=400&q=75&fit=crop" alt="Grooming" loading="lazy"></div><div class="svc-body"><div class="svc-name">Grooming</div><div class="svc-desc">Bath, brush, trim, nail & ear care by certified groomers.</div></div></div>
+    <div class="svc"><div class="svc-img"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=75&fit=crop" alt="Vet Care" loading="lazy"></div><div class="svc-body"><div class="svc-name">Vet Care</div><div class="svc-desc">Vaccinations, deworming & health checks on demand.</div></div></div>
+    <div class="svc"><div class="svc-img"><img src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=400&q=75&fit=crop" alt="Training" loading="lazy"></div><div class="svc-body"><div class="svc-name">Training</div><div class="svc-desc">Obedience, agility & behaviour with certified trainers.</div></div></div>
+    <div class="svc"><div class="svc-img"><img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&q=75&fit=crop" alt="Transport" loading="lazy"></div><div class="svc-body"><div class="svc-name">Pick-up & Drop</div><div class="svc-desc">Doorstep transport for boarding, grooming & vet visits.</div></div></div>
+    <div class="svc"><div class="svc-img"><img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&q=75&fit=crop" alt="Nutrition" loading="lazy"></div><div class="svc-body"><div class="svc-name">Nutrition</div><div class="svc-desc">Breed-specific diet plans and premium food supply.</div></div></div>
   </div>
 </section>
 
 <!-- BOARDING -->
-<section class="boarding-wrap" id="boarding">
+<section class="boarding-grid dark" id="boarding">
   <div class="boarding-left">
-    <div class="sec-lbl"><span class="sec-num">03</span><span class="sec-txt" style="color:rgba(250,247,242,.3)">Boarding</span></div>
-    <h2 class="big-h light">We watch.<br>You <em>travel.</em></h2>
-    <p class="boarding-desc">Safe, supervised stays with 24/7 care, daily photo updates, and a dedicated attendant for every dog — big or small.</p>
+    <div class="sec-lbl"><span class="sec-num">03</span><span class="sec-txt light">Boarding</span></div>
+    <h2 class="big-h lt">We watch.<br>You <em>travel.</em></h2>
+    <p class="boarding-desc">Safe, supervised stays with 24/7 care, daily photo updates, and a dedicated attendant — big dog or small.</p>
     <div class="plan-list">
       <div class="plan-row"><div class="plan-l"><div class="plan-dot"></div><div><div class="plan-nm">Day Care</div><div class="plan-ds">9am to 7pm drop & pick</div></div></div><div class="plan-pr">₹500 <span>/day</span></div></div>
       <div class="plan-row"><div class="plan-l"><div class="plan-dot"></div><div><div class="plan-nm">Overnight Stay</div><div class="plan-ds">Full day + night + morning walk</div></div></div><div class="plan-pr">₹900 <span>/night</span></div></div>
-      <div class="plan-row"><div class="plan-l"><div class="plan-dot"></div><div><div class="plan-nm">Extended Stay (7+ nights)</div><div class="plan-ds">Free grooming session included</div></div></div><div class="plan-pr">₹750 <span>/night</span></div></div>
-      <div class="plan-row"><div class="plan-l"><div class="plan-dot s"></div><div><div class="plan-nm">Premium Suite</div><div class="plan-ds">Private AC room + personal attendant</div></div></div><div class="plan-pr s">₹1,400 <span>/night</span></div></div>
+      <div class="plan-row"><div class="plan-l"><div class="plan-dot"></div><div><div class="plan-nm">Extended (7+ nights)</div><div class="plan-ds">Free grooming included</div></div></div><div class="plan-pr">₹750 <span>/night</span></div></div>
+      <div class="plan-row"><div class="plan-l"><div class="plan-dot s"></div><div><div class="plan-nm">Premium Suite</div><div class="plan-ds">Private AC room + attendant</div></div></div><div class="plan-pr s">₹1,400 <span>/night</span></div></div>
     </div>
     <a href="#contact" class="btn-gold">Book a Stay →</a>
   </div>
   <div class="boarding-right">
     <img src="https://images.unsplash.com/photo-1591946614720-90a587da4a36?w=900&q=85&fit=crop" alt="Dog Boarding" loading="lazy">
-    <div class="boarding-overlay"></div>
-    <div class="boarding-photo-card">
-      <div class="bpc-title">Your dog's home away from home.</div>
-      <div class="perk"><span class="perk-icon">📸</span> Daily photos & video updates</div>
-      <div class="perk"><span class="perk-icon">🌙</span> 24/7 supervised stays</div>
-      <div class="perk"><span class="perk-icon">🍖</span> Your dog's diet honoured</div>
-      <div class="perk"><span class="perk-icon">🐕</span> Socialised play sessions</div>
+    <div class="b-overlay"></div>
+    <div class="b-card">
+      <div class="b-card-title">Your dog's home away from home.</div>
+      <div class="perk">📸 Daily photos & video updates</div>
+      <div class="perk">🌙 24/7 supervised stays</div>
+      <div class="perk">🍖 Your dog's diet honoured</div>
+      <div class="perk">🐕 Socialised play sessions</div>
     </div>
   </div>
 </section>
 
 <!-- GALLERY -->
-<section class="gallery-wrap" id="gallery">
+<section class="sec alt" id="gallery">
   <div class="sec-lbl"><span class="sec-num">04</span><span class="sec-txt">Our Happy Dogs</span></div>
   <h2 class="big-h">A glimpse into <em>our world.</em></h2>
-  <div class="gallery-grid">
+  <div class="gal-grid">
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&q=80&fit=crop" alt="Golden Retriever" loading="lazy"><div class="gal-label">Golden Retriever</div></div>
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1477884213360-7e9d7dcc1e48?w=400&q=80&fit=crop" alt="Puppy" loading="lazy"><div class="gal-label">New Arrivals</div></div>
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1558929996-da64ba858215?w=400&q=80&fit=crop" alt="German Shepherd" loading="lazy"><div class="gal-label">German Shepherd</div></div>
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=400&q=80&fit=crop" alt="Training" loading="lazy"><div class="gal-label">Training Day</div></div>
-    <div class="gal-item"><img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=600&q=80&fit=crop" alt="Grooming" loading="lazy"><div class="gal-label">Grooming Session</div></div>
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=400&q=80&fit=crop" alt="Labrador" loading="lazy"><div class="gal-label">Labrador</div></div>
+    <div class="gal-item"><img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=600&q=80&fit=crop" alt="Grooming" loading="lazy"><div class="gal-label">Grooming Session</div></div>
     <div class="gal-item"><img src="https://images.unsplash.com/photo-1612536057832-2ff7ead58194?w=400&q=80&fit=crop" alt="Poodle" loading="lazy"><div class="gal-label">Poodle</div></div>
   </div>
 </section>
 
 <!-- CARE -->
-<section class="sec-wrap" id="care" style="background:var(--cream)">
+<section class="sec" id="care">
   <div class="sec-lbl"><span class="sec-num">05</span><span class="sec-txt">Care Services</span></div>
   <h2 class="big-h">Everything they <em>deserve.</em></h2>
   <div class="care-grid">
     <div class="care-big">
-      <img class="care-big-img" src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=700&q=80&fit=crop" alt="Dog Grooming" loading="lazy">
-      <div class="care-big-overlay"></div>
-      <div class="care-big-content">
+      <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?w=700&q=80&fit=crop" alt="Grooming" loading="lazy">
+      <div class="care-big-ov"></div>
+      <div class="care-big-cnt">
         <div class="care-badge">Professional Grooming</div>
-        <div class="care-big-title">Looking good,<br>feeling great.</div>
-        <div class="care-big-desc">Breed-specific styling by groomers who understand every coat type and every dog's personality.</div>
+        <div class="care-big-t">Looking good,<br>feeling great.</div>
+        <div class="care-big-d">Breed-specific styling by groomers who love every coat type — and every personality.</div>
         <div class="care-list">
           <div class="care-item">Bath, blow-dry & brush-out</div>
           <div class="care-item">Haircut & breed-specific styling</div>
@@ -588,82 +522,34 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
         </div>
       </div>
     </div>
-    <div class="care-sm teal-ov">
-      <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=80&fit=crop" alt="Vet Care" loading="lazy">
-      <div class="care-sm-overlay"><div class="csm-title">Vet & Vaccinations</div><div class="csm-desc">Core vaccine schedule, deworming & health certs.</div></div>
-    </div>
-    <div class="care-sm gold-ov">
-      <img src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=400&q=80&fit=crop" alt="Training" loading="lazy">
-      <div class="care-sm-overlay"><div class="csm-title">Obedience Training</div><div class="csm-desc">8-week positive reinforcement programs.</div></div>
-    </div>
-    <div class="care-sm cream-ov">
-      <img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&q=80&fit=crop" alt="Puppy Care" loading="lazy">
-      <div class="care-sm-overlay"><div class="csm-title">Health Screening</div><div class="csm-desc">Genetic testing & OFA clearances for breeders.</div></div>
-    </div>
-    <div class="care-sm ink-ov">
-      <img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&q=80&fit=crop" alt="Dog Care" loading="lazy">
-      <div class="care-sm-overlay"><div class="csm-title">Microchipping</div><div class="csm-desc">Every puppy chipped. Lifetime traceability.</div></div>
-    </div>
+    <div class="care-sm teal-ov"><img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&q=80&fit=crop" alt="Vet" loading="lazy"><div class="care-sm-ov"><div class="csm-t">Vet & Vaccinations</div><div class="csm-d">Core vaccines, deworming & health certs.</div></div></div>
+    <div class="care-sm gold-ov"><img src="https://images.unsplash.com/photo-1601758174493-45d0a4d3e407?w=400&q=80&fit=crop" alt="Training" loading="lazy"><div class="care-sm-ov"><div class="csm-t">Obedience Training</div><div class="csm-d">8-week positive reinforcement programs.</div></div></div>
+    <div class="care-sm ink-ov"><img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&q=80&fit=crop" alt="Health" loading="lazy"><div class="care-sm-ov"><div class="csm-t">Health Screening</div><div class="csm-d">Genetic testing & OFA clearances.</div></div></div>
+    <div class="care-sm dk-ov"><img src="https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400&q=80&fit=crop" alt="Microchip" loading="lazy"><div class="care-sm-ov"><div class="csm-t">Microchipping</div><div class="csm-d">Every puppy chipped. Lifetime trace.</div></div></div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="sec-wrap" style="background:var(--warm)">
+<section class="sec alt">
   <div class="sec-lbl"><span class="sec-num">06</span><span class="sec-txt">What They Say</span></div>
   <h2 class="big-h">Happy dogs, <em>happy families.</em></h2>
   <div class="testi-grid">
-    <div class="testi-card">
-      <div class="tc-border"></div>
-      <div class="tc-body">
-        <div class="tc-q">"</div>
-        <p class="tc-text">Bruno came home healthy, socialised, and full of love. Three years later — still the best thing that happened to our family.</p>
-        <div class="tc-foot">
-          <div class="tc-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=88&q=80&fit=crop&crop=face" alt="Priya" loading="lazy"></div>
-          <div><div class="tc-name">Priya Nair</div><div class="tc-pet">Bruno · Golden Retriever</div></div>
-          <div class="tc-stars">★★★★★</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="tc-border"></div>
-      <div class="tc-body">
-        <div class="tc-q">"</div>
-        <p class="tc-text">10 days of boarding and Max came back calm and glowing. Got beautiful photos every single evening. I don't worry about travel anymore.</p>
-        <div class="tc-foot">
-          <div class="tc-avatar"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=88&q=80&fit=crop&crop=face" alt="Arjun" loading="lazy"></div>
-          <div><div class="tc-name">Arjun Mehta</div><div class="tc-pet">Max · Labrador</div></div>
-          <div class="tc-stars">★★★★★</div>
-        </div>
-      </div>
-    </div>
-    <div class="testi-card">
-      <div class="tc-border"></div>
-      <div class="tc-body">
-        <div class="tc-q">"</div>
-        <p class="tc-text">Rocky transformed in 8 weeks. Patient, gifted trainers who treat every dog like their own. Worth every rupee, absolutely.</p>
-        <div class="tc-foot">
-          <div class="tc-avatar"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=88&q=80&fit=crop&crop=face" alt="Sneha" loading="lazy"></div>
-          <div><div class="tc-name">Sneha Krishnan</div><div class="tc-pet">Rocky · German Shepherd</div></div>
-          <div class="tc-stars">★★★★★</div>
-        </div>
-      </div>
-    </div>
+    <div class="tc"><div class="tc-bar"></div><div class="tc-body"><div class="tc-q">"</div><p class="tc-text">Bruno came home healthy and full of love. Three years later — still the best thing that happened to our family.</p><div class="tc-foot"><div class="tc-av"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80&fit=crop&crop=face" alt="Priya" loading="lazy"></div><div><div class="tc-name">Priya Nair</div><div class="tc-pet">Bruno · Golden Retriever</div></div><div class="tc-stars">★★★★★</div></div></div></div>
+    <div class="tc"><div class="tc-bar"></div><div class="tc-body"><div class="tc-q">"</div><p class="tc-text">10 days boarding and Max came back calm and glowing. Got beautiful photos every evening. I don't worry about travel anymore.</p><div class="tc-foot"><div class="tc-av"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80&fit=crop&crop=face" alt="Arjun" loading="lazy"></div><div><div class="tc-name">Arjun Mehta</div><div class="tc-pet">Max · Labrador</div></div><div class="tc-stars">★★★★★</div></div></div></div>
+    <div class="tc"><div class="tc-bar"></div><div class="tc-body"><div class="tc-q">"</div><p class="tc-text">Rocky transformed in 8 weeks. Patient, gifted trainers who treat every dog like their own. Worth every rupee.</p><div class="tc-foot"><div class="tc-av"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80&fit=crop&crop=face" alt="Sneha" loading="lazy"></div><div><div class="tc-name">Sneha Krishnan</div><div class="tc-pet">Rocky · German Shepherd</div></div><div class="tc-stars">★★★★★</div></div></div></div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section class="contact-wrap" id="contact">
+<section class="contact-grid dark" id="contact">
   <div class="contact-left">
-    <div class="sec-lbl"><span class="sec-num">07</span><span class="sec-txt" style="color:rgba(250,247,242,.3)">Get in Touch</span></div>
+    <div class="sec-lbl"><span class="sec-num">07</span><span class="sec-txt light">Get in Touch</span></div>
     <h2>Let's talk <em>dogs.</em></h2>
-    <p>Puppy availability, boarding enquiries, or just a question — our team responds within 2 hours, every day of the week.</p>
+    <p>Puppy availability, boarding enquiries, or just a question — we respond within 2 hours, every day.</p>
     <div class="info-list">
       <div class="info-row"><div class="info-icon">📍</div><div><div class="info-key">Location</div><div class="info-val">123 Green Acres, Vellore, Tamil Nadu</div></div></div>
       <div class="info-row"><div class="info-icon">📞</div><div><div class="info-key">Phone</div><div class="info-val">+91 98765 43210</div></div></div>
-      <div class="info-row">
-        <div class="info-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div>
-        <div><div class="info-key">WhatsApp</div><div class="info-val">+91 98765 43210</div></div>
-      </div>
+      <div class="info-row"><div class="info-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></div><div><div class="info-key">WhatsApp</div><div class="info-val">+91 98765 43210</div></div></div>
       <div class="info-row"><div class="info-icon">✉️</div><div><div class="info-key">Email</div><div class="info-val">hello@thedogclub.in</div></div></div>
       <div class="info-row"><div class="info-icon">📸</div><div><div class="info-key">Instagram</div><div class="info-val">@thedogclub.in</div></div></div>
     </div>
@@ -671,12 +557,12 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
   <div class="contact-right">
     <h3>Send an Enquiry</h3>
     <div class="f-row">
-      <div class="f-group"><label>Your Name</label><input type="text" placeholder="Rahul Kumar"></div>
-      <div class="f-group"><label>Phone</label><input type="tel" placeholder="+91 98765 43210"></div>
+      <div class="fg"><label>Your Name</label><input type="text" placeholder="Rahul Kumar"></div>
+      <div class="fg"><label>Phone</label><input type="tel" placeholder="+91 98765 43210"></div>
     </div>
-    <div class="f-group"><label>I'm Looking For</label><select><option>Buying a Puppy</option><option>Dog Boarding</option><option>Grooming</option><option>Obedience Training</option><option>Veterinary Care</option><option>Pick-up & Drop</option></select></div>
-    <div class="f-group"><label>Breed (if applicable)</label><input type="text" placeholder="e.g. Labrador, Golden Retriever..."></div>
-    <div class="f-group"><label>Message</label><textarea placeholder="Availability, boarding dates, or any questions..."></textarea></div>
+    <div class="fg"><label>I'm Looking For</label><select><option>Buying a Puppy</option><option>Dog Boarding</option><option>Grooming</option><option>Obedience Training</option><option>Veterinary Care</option><option>Pick-up & Drop</option></select></div>
+    <div class="fg"><label>Breed (if applicable)</label><input type="text" placeholder="e.g. Labrador, Golden Retriever..."></div>
+    <div class="fg"><label>Message</label><textarea placeholder="Dates, availability, or any questions..."></textarea></div>
     <button class="f-submit" onclick="alert('Thank you! We\'ll be in touch within 2 hours. 🐾')">Send Enquiry →</button>
   </div>
 </section>
@@ -685,8 +571,8 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
 <footer>
   <div class="ft-grid">
     <div>
-      <div class="ft-logo-row">
-        <div class="ft-logo-img"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=68&q=80&fit=crop" alt="The Dog Club" loading="lazy"></div>
+      <div class="ft-brand-row">
+        <div class="ft-logo-img"><img src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=60&q=80&fit=crop" alt="The Dog Club" loading="lazy"></div>
         <div class="ft-brand">The Dog <span>Club</span></div>
       </div>
       <p class="ft-desc">Premium dog breeding, boarding and care in Vellore since 2009. Raising healthy dogs and happy families.</p>
@@ -699,19 +585,59 @@ footer{background:#071212;padding:clamp(40px,5vw,60px) 5vw clamp(18px,2vw,26px)}
 </footer>
 
 <script>
+// scroll progress bar
+var scrollBar = document.getElementById('scroll-bar');
+function updateScroll(){
+  var doc = document.documentElement;
+  var scrolled = doc.scrollTop || document.body.scrollTop;
+  var total = doc.scrollHeight - doc.clientHeight;
+  var pct = total > 0 ? (scrolled / total) * 100 : 0;
+  scrollBar.style.width = pct + '%';
+}
+window.addEventListener('scroll', updateScroll, {passive:true});
+updateScroll();
+
+var menuOpen = false;
+var drawer = document.getElementById('drawer');
+var ham = document.getElementById('ham');
+
 function toggleMenu(){
-  document.getElementById('ham').classList.toggle('open');
-  document.getElementById('mob').classList.toggle('open');
+  menuOpen = !menuOpen;
+  ham.classList.toggle('open', menuOpen);
+  if(menuOpen){
+    drawer.classList.add('visible');
+    // small delay to trigger CSS transition
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        drawer.classList.add('open');
+      });
+    });
+  } else {
+    drawer.classList.remove('open');
+    setTimeout(function(){ drawer.classList.remove('visible'); }, 300);
+  }
 }
+
 function closeMenu(){
-  document.getElementById('ham').classList.remove('open');
-  document.getElementById('mob').classList.remove('open');
+  menuOpen = false;
+  ham.classList.remove('open');
+  drawer.classList.remove('open');
+  setTimeout(function(){ drawer.classList.remove('visible'); }, 300);
 }
-// Lazy image fade-in
-document.querySelectorAll('img').forEach(img=>{
-  img.classList.add('img-fade');
-  if(img.complete){img.classList.add('loaded')}
-  else{img.addEventListener('load',()=>img.classList.add('loaded'))}
+
+// close on outside click
+document.addEventListener('click', function(e){
+  if(menuOpen && !ham.contains(e.target) && !drawer.contains(e.target)){
+    closeMenu();
+  }
+});
+
+// image fade-in on load
+document.querySelectorAll('img').forEach(function(img){
+  img.style.opacity = '0';
+  img.style.transition = 'opacity .5s ease';
+  if(img.complete){ img.style.opacity='1'; }
+  else { img.addEventListener('load', function(){ img.style.opacity='1'; }); }
 });
 </script>
 </body>
